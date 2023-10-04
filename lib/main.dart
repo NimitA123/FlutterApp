@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/constants/bottomsheet.dart';
+import 'package:flutter_svg/svg.dart';
 
-import 'constants/CustomToolbar.dart';
+import 'InviteVendor.dart';
 import 'models/GetTripResponse.dart';
 
 void main() {
@@ -14,19 +16,125 @@ class MamaStops extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<MamaStops> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   Data? getTrip;
+  bool isDrawerOpen = false;
+
+  void _openDrawer() {
+    setState(() {
+      isDrawerOpen = true;
+    });
+  }
+
+  void _closeDrawer() {
+    setState(() {
+      isDrawerOpen = false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     // getData();
-
     getData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomToolbar(),
+      key: _scaffoldKey,
+      appBar: AppBar(
+        /*   centerTitle: true,
+        title: const Text(
+          'Navigation Drawer',
+        ),
+        backgroundColor: const Color(0xff764abc),*/
+        backgroundColor: Colors.white,
+        leading: GestureDetector(
+          onTap: () {
+            _scaffoldKey.currentState!.openDrawer();
+          },
+          child: SvgPicture.asset("assets/avtar.svg"),
+        ),
+        actions: [
+          SvgPicture.asset("assets/sos.svg"),
+          SvgPicture.asset("assets/notification.svg"),
+        ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            Row(children: [
+              SvgPicture.asset("assets/avtar.svg"),
+              Text("bdbcbdcdcdc")
+            ]),
+            /* const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: Row(
+                  children: [Text("vdvfdhvfv")],
+                )),*/
+            ListTile(
+              leading: Icon(Icons.person),
+              title: const Text(' My Trip '),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.book),
+              title: const Text('Documents'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.workspace_premium),
+              title: const Text(' Profile Request '),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.video_label),
+              title: const Text(' Language '),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.edit),
+              title: const Text(' Invite Vendor '),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+
+            ListTile(
+              leading: Icon(Icons.edit),
+              title: const Text(' About and Legal '),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.edit),
+              title: const Text(' Help and Support '),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: const Text('LogOut'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
       body: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,6 +226,24 @@ class _SplashScreenState extends State<MamaStops> {
                         title1: '',
                         subtitle1: '',
                       ),
+
+                      GestureDetector(
+                        onTap: () {
+                          print("onclick");
+                          MyCustomBottomSheet()._showCustomBottomSheet(context);
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 40,
+                          color: Color(0XffFFF7E1),
+                          child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Request Cancellation",
+                                style: TextStyle(color: Color(0XffD74F58)),
+                              )),
+                        ),
+                      )
                     ],
                   )),
                 )
@@ -131,10 +257,10 @@ class _SplashScreenState extends State<MamaStops> {
                   children: [
                     OutlinedButton(
                       onPressed: () {
-                        /*    Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => InviteVendor()));*/
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => InviteVendor()));
                       },
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(
@@ -225,6 +351,23 @@ class CommonWidget extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class MyCustomBottomSheet {
+  void _showCustomBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          // Set the desired height of the bottom sheet
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            children: [bottomsheet()],
+          ),
+        );
+      },
     );
   }
 }
